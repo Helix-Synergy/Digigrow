@@ -23,7 +23,13 @@ const CollaborateSchema = new mongoose.Schema({
     createdAt: { type: Date, default: Date.now }
 });
 
+// 3. Visitor Count Schema
+const VisitorCountSchema = new mongoose.Schema({
+    count: { type: Number, default: 1000 }
+});
+
 module.exports = {
     Contact: mongoose.model('Contact', ContactSchema),
-    Collaborate: mongoose.model('Collaborate', CollaborateSchema)
+    Collaborate: mongoose.model('Collaborate', CollaborateSchema),
+    VisitorCount: mongoose.model('VisitorCount', VisitorCountSchema)
 };

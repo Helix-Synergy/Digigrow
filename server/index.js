@@ -10,6 +10,7 @@ const cors = require('cors');
 // Import route handlers
 const contactRoutes = require('./routes/contact');
 const collaborateRoutes = require('./routes/collaborate');
+const visitorRoutes = require('./routes/visitor');
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -22,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Route handlers
 app.use('/api/contact', contactRoutes);
 app.use('/api/collaborate', collaborateRoutes);
+app.use('/api/visitors', visitorRoutes);
 
 app.get("/", (req, res) => res.send("Digigrow Backend is alive!"));
 
