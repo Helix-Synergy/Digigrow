@@ -5,15 +5,21 @@ const { VisitorCount } = require('../models/FormSchemas');
 // Get and increment visitor count
 router.get('/', async (req, res) => {
     try {
-        let visitor = await VisitorCount.findOne();
-        if (!visitor) {
-            visitor = new VisitorCount({ count: 1000 });
-        }
+        let visitor;
         
-        // If query param 'increment' is true, increment the count
+        // If query param 'increment' is true, increment the count atomically
         if (req.query.increment === 'true') {
-            visitor.count += 1;
-            await visitor.save();
+            visitor = await VisitorCount.findOneAndUpdate(
+                {}, 
+                { $inc: { count: 1 } }, 
+                { new: true, upsert: true, setDefaultsOnInsert: true }
+            );
+        } else {
+            visitor = await VisitorCount.findOne();
+            if (!visitor) {
+                visitor = new VisitorCount({ count: 1000 });
+                await visitor.save();
+            }
         }
         
         res.status(200).json({ count: visitor.count });
